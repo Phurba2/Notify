@@ -4,15 +4,23 @@ import threading
 from django.http import JsonResponse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import NotificationHistory, ProfessionalOTP
+from .models import (
+    NotificationHistory,
+    ProfessionalOTP,
+    PasswordResetOTP,
+)
+
 from .utils import (
     send_html_email,
     send_professional_verification_email,
     generate_otp,
+    send_forgot_password_email,
 )
 
 class NotifyView(APIView):
@@ -252,3 +260,87 @@ class ProfessionalVerifyOTPView(APIView):
         return Response({
             "status": "Professional verified. Welcome email is being sent."
         }, status=200)
+
+class ForgotPasswordRequestView(APIView):
+    def post(self, request):
+        email = request.data.get("email")
+
+        if not email:
+            return Response({"error": "Email is required"}, status=400)
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "No user found with this email"}, status=404)
+
+        otp_code = generate_otp()
+
+        reset_otp = PasswordResetOTP.objects.create(
+            email=email,
+            otp_code=otp_code,
+        )
+
+        context = {
+            "site_name": "My Super Website",
+            "site_domain": "mysuperwebsite.com",
+            "reference_id": reset_otp.id,
+            "otp_code": otp_code,
+            "expires_in": 10,
+            "email": email,
+            "verification_url": "http://127.0.0.1:8000/reset-password-page/",
+            "support_phone": "+977-9800000000",
+        }
+
+        success = send_forgot_password_email(email, context)
+
+        return Response({
+            "status": "Password reset OTP sent" if success else "Failed to send password reset email",
+            "reference_id": reset_otp.id,
+        }, status=200 if success else 500)
+
+class VerifyForgotPasswordOTPView(APIView):
+    def post(self, request):
+        reference_id = request.data.get("reference_id")
+        otp_code = request.data.get("otp_code")
+
+        if not reference_id or not otp_code:
+            return Response({"error": "reference_id and otp_code are required"}, status=400)
+
+        try:
+            reset_otp = PasswordResetOTP.objects.get(id=reference_id)
+        except PasswordResetOTP.DoesNotExist:
+            return Response({"error": "Invalid reference ID"}, status=404)
+
+        if reset_otp.is_expired():
+            return Response({"error": "OTP has expired"}, status=400)
+
+        if reset_otp.otp_code != str(otp_code):
+            return Response({"error": "Invalid OTP"}, status=400)
+
+        reset_otp.is_verified = True
+        reset_otp.save()
+
+        return Response({"status": "OTP verified. You can reset password now."}, status=200)
+
+class ResetPasswordView(APIView):
+    def post(self, request):
+        reference_id = request.data.get("reference_id")
+        new_password = request.data.get("new_password")
+
+        if not reference_id or not new_password:
+            return Response({"error": "reference_id and new_password are required"}, status=400)
+
+        try:
+            reset_otp = PasswordResetOTP.objects.get(id=reference_id)
+        except PasswordResetOTP.DoesNotExist:
+            return Response({"error": "Invalid reference ID"}, status=404)
+
+        if not reset_otp.is_verified:
+            return Response({"error": "OTP not verified"}, status=400)
+
+        user = User.objects.get(email=reset_otp.email)
+        user.password = make_password(new_password)
+        user.save()
+
+        return Response({"status": "Password reset successful"}, status=200)
+

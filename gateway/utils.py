@@ -56,3 +56,24 @@ def send_professional_verification_email(user_email, context):
     except Exception as e:
         print("📧 Professional Verification Email Error:", e)
         return False
+
+def send_forgot_password_email(user_email, context):
+    try:
+        html_content = render_to_string("emails/forgot_password.html", context)
+
+        email = EmailMultiAlternatives(
+            subject=f"Reset Your Password - {context.get('site_name')}",
+            body=f"Your password reset OTP is {context.get('otp_code')}",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[user_email],
+        )
+
+        email.attach_alternative(html_content, "text/html")
+        email.send()
+
+        print("✅ Forgot password email sent successfully")
+        return True
+
+    except Exception as e:
+        print("📧 Forgot Password Email Error:", e)
+        return False
