@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to {{ site_name }} Professionals</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f9fafb;">
+  <div style="max-width: 600px; margin: 32px auto; background-color: white; border-radius: 8px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); overflow: hidden;">
+
+    <div style="background-color: #0e4d92; color: white; padding: 24px;">
+      <table width="100%">
+        <tr>
+          <td>
+            <h1 style="font-size: 24px; margin: 0 0 8px 0;">Professional Registration</h1>
+            <p style="color: #dbeafe; margin: 0;">Welcome to {{ site_name }} Professional Network</p>
+          </td>
+          <td style="text-align: right;">
+            <div style="background-color: rgba(255,255,255,0.2); border-radius: 8px; padding: 12px;">
+              <p style="font-size: 12px; color: #dbeafe; margin: 0;">Professional ID</p>
+              <p style="font-size: 20px; font-weight: bold; margin: 0;">#{{ reg_id }}</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="padding: 48px 24px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+      <div style="background-color: #0e4d92; width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 16px; line-height: 64px;">
+        <span style="color: white; font-size: 24px;">👔</span>
+      </div>
+
+      <h2 style="font-size: 32px; color: #0e4d92; margin: 0 0 8px 0;">Welcome, {{ name }}!</h2>
+      <p style="color: #6b7280; margin: 0;">Your professional account has been successfully created</p>
+    </div>
+
+    <div style="padding: 24px; text-align: center;">
+      <span style="display: inline-block; padding: 8px 16px; border-radius: 9999px; border: 2px solid #bfdbfe; background-color: #dbeafe; color: #1e40af; font-weight: bold;">
+        ✅ PROFESSIONAL ACCOUNT REGISTERED
+      </span>
+    </div>
+
+    <div style="padding: 24px;">
+      <div style="background-color: #e6eef9; border-radius: 8px; padding: 20px; margin-bottom: 24px; border: 1px solid #bfdbfe;">
+        <h3 style="font-size: 18px; color: #1f2937; margin: 0 0 16px 0;">👔 Professional Details</h3>
+
+        <p><strong>Full Name:</strong><br>{{ name }}</p>
+        <p><strong>Email Address:</strong><br>{{ email }}</p>
+
+        {% if phone %}
+          <p><strong>Phone Number:</strong><br>{{ phone }}</p>
+        {% endif %}
+
+        {% if expertise %}
+          <p><strong>Expertise:</strong><br>{{ expertise }}</p>
+        {% endif %}
+
+        {% if location %}
+          <p><strong>Location:</strong><br>{{ location }}</p>
+        {% endif %}
+
+        {% if map_url %}
+          <p>
+            <a href="{{ map_url }}" style="color: #0e4d92; font-weight: bold; text-decoration: none;">View on Map</a>
+          </p>
+        {% endif %}
+
+        <p><strong>Registration Date:</strong><br>{{ created_at }}</p>
+      </div>
+
+      <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 24px; border: 1px solid #e5e7eb;">
+        <h3 style="font-size: 18px; color: #1f2937; margin: 0 0 16px 0;">🚀 Next Steps</h3>
+
+        <p><strong>Important:</strong> Your application is under approval.</p>
+        <p>Your application will be verified manually within 24 hours.</p>
+
+        <p><strong>1️⃣ Complete Your Professional Profile</strong><br>
+          Add your portfolio, certifications, and experience.
+        </p>
+
+        <p><strong>2️⃣ Set Your Availability</strong><br>
+          Update your calendar to show when you are available.
+        </p>
+
+        <p><strong>3️⃣ Get Project Opportunities</strong><br>
+          Clients can hire you directly, or our platform may assign projects automatically.
+        </p>
+
+        <div style="margin-top: 20px; text-align: center;">
+          <a href="{{ dashboard_url }}" style="display: inline-block; background-color: #0e4d92; color: white; font-weight: bold; text-decoration: none; padding: 12px 24px; border-radius: 6px;">
+            Login to Your Professional Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 20px 24px; background-color: #e6eef9; border-top: 1px solid #bfdbfe;">
+      <h3 style="font-size: 18px; color: #0e4d92; margin: 0 0 8px 0;">Important Information</h3>
+      <p>• Keep your login credentials secure.</p>
+      <p>• Complete your profile to increase visibility.</p>
+      <p>• Regularly update your portfolio with recent work.</p>
+      <p>• Communications and payments are managed through our platform.</p>
+    </div>
+
+    <div style="padding: 16px 24px; background-color: #1f2937; text-align: center;">
+      <p style="color: #d1d5db; font-size: 14px; margin: 0 0 8px 0;">
+        This is an automated email confirmation of your professional registration.
+      </p>
+      <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+        © {% now "Y" %} {{ site_name }}. All rights reserved.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>

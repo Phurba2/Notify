@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to {{ site_name }}</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f9fafb;">
+
+  <div style="max-width: 600px; margin: 32px auto; background-color: white; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); overflow: hidden;">
+
+    <!-- Header -->
+    <div style="background-color: #007a45; color: white; padding: 24px;">
+      <table width="100%" style="border-collapse: collapse;">
+        <tr>
+          <td style="vertical-align: top;">
+            <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 8px 0;">
+              Registration Successful
+            </h1>
+            <p style="color: #dcfce7; margin: 0;">
+              Welcome to {{ site_name }}
+            </p>
+          </td>
+
+          <td style="text-align: right; vertical-align: top;">
+            <div style="background-color: rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 12px; display: inline-block;">
+              <p style="font-size: 14px; color: #dcfce7; margin: 0 0 4px 0;">
+                User ID
+              </p>
+              <p style="font-size: 20px; font-weight: bold; margin: 0;">
+                #{{ user_id }}
+              </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Welcome Section -->
+    <div style="padding: 48px 24px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto; margin-bottom: 16px;">
+        <tr>
+          <td align="center" valign="middle" style="background-color: #007a45; width: 64px; height: 64px; border-radius: 50%;">
+            <span style="color: white; font-size: 24px;">👤</span>
+          </td>
+        </tr>
+      </table>
+
+      <h2 style="font-size: 32px; font-weight: bold; color: #007a45; margin: 0 0 8px 0;">
+        Welcome, {{ name }}!
+      </h2>
+
+      <p style="color: #6b7280; margin: 2px;">
+        Your account has been successfully created
+      </p>
+    </div>
+
+    <!-- Status Badge -->
+    <div style="padding: 24px 24px 8px 24px; text-align: center;">
+      <div style="display: inline-block; padding: 8px 16px; border-radius: 9999px; border: 2px solid #bbf7d0; background-color: #dcfce7; color: #166534;">
+        <span style="margin-right: 8px;">✅</span>
+        <span style="font-weight: bold;">ACCOUNT ACTIVATED</span>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div style="padding: 24px;">
+
+      <!-- Account Details -->
+      <div style="background-color: #e6f2ee; border-radius: 8px; padding: 20px; margin-bottom: 24px; border: 1px solid #bbf7d0;">
+        <h3 style="font-size: 18px; font-weight: bold; color: #1f2937; margin: 0 0 16px 0;">
+          👤 Account Details
+        </h3>
+
+        <table style="width: 100%; border-collapse: collapse;">
+
+          <tr>
+            <td style="padding: 8px 0; vertical-align: top; font-size: 14px;">
+              <p style="color: #6b7280; margin: 0 0 4px 0;">Full Name</p>
+              <p style="font-weight: 600; color: #1f2937; margin: 0;">{{ name }}</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 8px 0; vertical-align: top; font-size: 14px;">
+              <p style="color: #6b7280; margin: 0 0 4px 0;">Email Address</p>
+              <p style="font-weight: 600; color: #1f2937; margin: 0;">{{ email }}</p>
+            </td>
+          </tr>
+
+          {% if phone %}
+          <tr>
+            <td style="padding: 8px 0; vertical-align: top; font-size: 14px;">
+              <p style="color: #6b7280; margin: 0 0 4px 0;">Phone Number</p>
+              <p style="font-weight: 600; color: #1f2937; margin: 0;">{{ phone }}</p>
+            </td>
+          </tr>
+          {% endif %}
+
+          <tr>
+            <td style="padding: 8px 0; vertical-align: top; font-size: 14px;">
+              <p style="color: #6b7280; margin: 0 0 4px 0;">Registration Date</p>
+              <p style="font-weight: 600; color: #1f2937; margin: 0;">{{ created_at }}</p>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+
+      <!-- Next Steps -->
+      <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 24px; border: 1px solid #e5e7eb;">
+        <h3 style="font-size: 18px; font-weight: bold; color: #1f2937; margin: 0 0 16px 0;">
+          🚀 Next Steps
+        </h3>
+
+        <table style="width: 100%; border-collapse: collapse;">
+
+          <tr>
+            <td style="padding: 8px 0; vertical-align: top; font-size: 14px;">
+              <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">
+                1️⃣ Complete Your Profile
+              </p>
+              <p style="color: #6b7280; margin: 0;">
+                Add your profile picture and additional information to enhance your experience.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 12px 0; vertical-align: top; font-size: 14px;">
+              <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">
+                2️⃣ Explore Our Services
+              </p>
+              <p style="color: #6b7280; margin: 0;">
+                Browse through our range of services and discover what we have to offer.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 12px 0; vertical-align: top; font-size: 14px;">
+              <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">
+                3️⃣ Connect with Professionals
+              </p>
+              <p style="color: #6b7280; margin: 0;">
+                Find and connect with talented professionals for your projects.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+        <div style="margin-top: 20px; text-align: center;">
+          <a href="{{ login_url }}" style="display: inline-block; background-color: #007a45; color: white; font-weight: bold; text-decoration: none; padding: 12px 24px; border-radius: 6px;">
+            Login to Your Account
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Important Information -->
+    <div style="padding: 20px 24px; background-color: #e6f2ee; border-top: 1px solid #bbf7d0;">
+      <h3 style="font-size: 18px; font-weight: bold; color: #007a45; margin: 0 0 8px 0;">
+        Important Information
+      </h3>
+
+      <div style="color: #374151;">
+        <p style="margin: 8px 0;">• Keep your login credentials safe and secure.</p>
+        <p style="margin: 8px 0;">• Do not share your password with anyone.</p>
+        <p style="margin: 8px 0;">• Update your profile to get personalized recommendations.</p>
+        <p style="margin: 8px 0;">• If you did not create this account, please contact us immediately.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="padding: 16px 24px; background-color: #1f2937; text-align: center;">
+      <p style="color: #d1d5db; font-size: 14px; margin: 0 0 8px 0;">
+        This is an automated email confirmation of your registration.
+      </p>
+
+      <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+        © {% now "Y" %} {{ site_name }}. All rights reserved.
+      </p>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Professional Account Verification - {{ site_name }}</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f9fafb;">
+  <div style="max-width: 600px; margin: 32px auto; background-color: white; border-radius: 8px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); overflow: hidden;">
+
+    <div style="background-color: #0e4d92; color: white; padding: 24px;">
+      <table width="100%">
+        <tr>
+          <td>
+            <h1 style="font-size: 24px; margin: 0 0 8px 0;">Professional Verification</h1>
+            <p style="color: #dbeafe; margin: 0;">One-Time Verification Code</p>
+          </td>
+          <td style="text-align: right;">
+            <div style="background-color: rgba(255,255,255,0.2); border-radius: 8px; padding: 12px;">
+              <p style="font-size: 14px; color: #dbeafe; margin: 0;">Reference ID</p>
+              <p style="font-size: 20px; font-weight: bold; margin: 0;">#{{ reference_id }}</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="padding: 48px 24px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+      <div style="background-color: #0e4d92; width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 16px; line-height: 64px;">
+        <span style="color: white; font-size: 24px;">🔐</span>
+      </div>
+      <h2 style="font-size: 32px; color: #0e4d92; margin: 0 0 8px 0;">Verify Your Account</h2>
+      <p style="color: #6b7280; margin: 0;">Please use the code below to verify your professional account</p>
+    </div>
+
+    <div style="padding: 32px 24px; text-align: center;">
+      <div style="background-color: #f3f4f6; border: 2px dashed #d1d5db; border-radius: 8px; padding: 24px; max-width: 320px; margin: 0 auto;">
+        <h3 style="font-size: 16px; color: #4b5563; margin: 0 0 16px 0;">Your Verification Code</h3>
+        <p style="font-family: Courier New, monospace; font-size: 32px; font-weight: bold; letter-spacing: 4px; margin: 0; color: #111827;">{{ otp_code }}</p>
+        <p style="color: #6b7280; font-size: 14px; margin: 16px 0 0 0;">Valid for {{ expires_in }} minutes</p>
+      </div>
+    </div>
+
+    <div style="padding: 24px;">
+      <div style="background-color: #e6eef9; border-radius: 8px; padding: 20px; margin-bottom: 24px; border: 1px solid #bfdbfe;">
+        <h3 style="font-size: 18px; color: #1f2937; margin: 0 0 16px 0;">👔 Professional Details</h3>
+        <p><strong>Name:</strong><br>{{ professional_name }}</p>
+        <p><strong>Email Address:</strong><br>{{ email }}</p>
+        <p><strong>Expertise:</strong><br>{{ expertise }}</p>
+      </div>
+
+      <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 24px; border: 1px solid #e5e7eb;">
+        <h3 style="font-size: 18px; color: #1f2937; margin: 0 0 16px 0;">📋 Instructions</h3>
+        <ul style="color: #4b5563; padding-left: 20px; margin: 0;">
+          <li>Enter this code on the professional verification page.</li>
+          <li>This code will expire in {{ expires_in }} minutes.</li>
+          <li>After verification, you will get access to the professional dashboard.</li>
+          <li>Do not share this code with anyone.</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center; margin-top: 24px;">
+        <a href="{{ verification_url }}" style="display: inline-block; background-color: #0e4d92; color: white; font-weight: bold; text-decoration: none; padding: 12px 24px; border-radius: 6px;">
+          Verify Account Online
+        </a>
+      </div>
+    </div>
+
+    <div style="padding: 20px 24px; background-color: #e6eef9; border-top: 1px solid #bfdbfe;">
+      <h3 style="font-size: 18px; color: #0e4d92; margin: 0 0 8px 0;">Need Help?</h3>
+      <p>If you have trouble with verification, contact support.</p>
+      <p><strong>Email:</strong> <a href="mailto:support@{{ site_domain }}" style="color: #0e4d92;">support@{{ site_domain }}</a></p>
+      <p><strong>Phone:</strong> {{ support_phone }}</p>
+    </div>
+
+    <div style="padding: 16px 24px; background-color: #1f2937; text-align: center;">
+      <p style="color: #d1d5db; font-size: 14px; margin: 0 0 8px 0;">This is an automated email. Please do not reply.</p>
+      <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+        © {% now "Y" %} {{ site_name }}. All rights reserved.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>

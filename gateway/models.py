@@ -1,25 +1,28 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 
 class NotificationHistory(models.Model):
-    # Define the choices
-    TYPE_CHOICES = [
-        ('MAIL', 'Email Notification'),
-        ('PUSH', 'Push Notification (Desktop)'),
-        ('INAPP', 'In-App Notification'),
-    ]
-    
-    STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('SENT', 'Sent'),
-        ('FAILED', 'Failed'),
-    ]
-
-    recipient_name = models.CharField(max_length=100)
+    recipient_name = models.CharField(max_length=255)
     message = models.TextField()
-    # Apply the choices here
-    notify_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+    notify_type = models.CharField(max_length=50, default="MAIL")
+    status = models.CharField(max_length=50, default="PENDING")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.recipient_name} | {self.notify_type} | {self.status}"
+        return self.recipient_name
+
+
+class ProfessionalOTP(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    expertise = models.CharField(max_length=255, blank=True, null=True)
+    otp_code = models.CharField(max_length=6)
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_expired(self):
+        return timezone.now() > self.created_at + timedelta(minutes=10)
+
+    def __str__(self):
+        return f"{self.name} - {self.email}"
