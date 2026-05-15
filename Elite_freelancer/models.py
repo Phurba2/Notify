@@ -17,8 +17,8 @@ class EmailHistory(models.Model):
     class Meta:
         verbose_name = "Email history"
         verbose_name_plural = "Email history"
-        db_table = "Elite_mail_emailhistory"
-        
+        db_table = "elite_freelancer"
+
     def __str__(self):
         return self.user
 
