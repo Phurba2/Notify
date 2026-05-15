@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Booking Verification Code - {{ site_name }}</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f9fafb;">
+  <div style="max-width: 600px; margin: 32px auto; background-color: white; border-radius: 8px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); overflow: hidden;">
+
+    <!-- Header -->
+    <div style="background-color: #007a45; color: white; padding: 24px;">
+      <table width="100%" style="border-collapse: collapse;">
+        <tr>
+          <td style="vertical-align: top;">
+            <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 8px 0;">Booking Verification</h1>
+            <p style="color: #dcfce7; margin: 0;">One-Time Verification Code</p>
+          </td>
+
+          <td style="text-align: right; vertical-align: top;">
+            <div style="background-color: rgba(255,255,255,0.2); border-radius: 8px; padding: 12px; display: inline-block;">
+              <p style="font-size: 14px; color: #dcfce7; margin: 0 0 4px 0;">Reference ID</p>
+              <p style="font-size: 20px; font-weight: bold; margin: 0;">#{{ reference_id }}</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Hero -->
+    <div style="padding: 48px 24px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto 16px;">
+        <tr>
+          <td align="center" valign="middle" style="background-color: #007a45; width: 64px; height: 64px; border-radius: 50%;">
+            <span style="color: white; font-size: 24px;">🔒</span>
+          </td>
+        </tr>
+      </table>
+
+      <h2 style="font-size: 32px; font-weight: bold; color: #007a45; margin: 0 0 8px 0;">Verify Your Booking</h2>
+      <p style="color: #6b7280; margin: 2px;">Please use the code below to verify your booking</p>
+    </div>
+
+    <!-- OTP Code -->
+    <div style="padding: 32px 24px; text-align: center;">
+      <div style="background-color: #f3f4f6; border: 2px dashed #d1d5db; border-radius: 8px; padding: 24px; max-width: 320px; margin: 0 auto;">
+        <h3 style="font-size: 16px; font-weight: 600; color: #4b5563; margin: 0 0 16px 0;">Your Verification Code</h3>
+
+        <p style="font-family: Courier New, monospace; font-size: 32px; font-weight: bold; letter-spacing: 4px; margin: 0; color: #111827;">
+          {{ otp_code }}
+        </p>
+
+        <p style="color: #6b7280; font-size: 14px; margin: 16px 0 0 0;">
+          Valid for {{ expires_in }} minutes
+        </p>
+      </div>
+    </div>
+
+    <!-- Booking Information -->
+    <div style="padding: 24px;">
+      <div style="background-color: #e6f2ee; border-radius: 8px; padding: 20px; margin-bottom: 24px; border: 1px solid #bbf7d0;">
+        <h3 style="font-size: 18px; font-weight: bold; color: #1f2937; margin: 0 0 16px 0;">
+          📝 Booking Details
+        </h3>
+
+        <p>
+          <strong>Service Type:</strong><br>
+          {{ service_type }}
+        </p>
+
+        <p>
+          <strong>Customer Name:</strong><br>
+          {{ customer_name }}
+        </p>
+
+        {% if event_date %}
+        <p>
+          <strong>Event Date:</strong><br>
+          {{ event_date }}
+        </p>
+        {% endif %}
+      </div>
+
+      <!-- Instructions -->
+      <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 24px; border: 1px solid #e5e7eb;">
+        <h3 style="font-size: 18px; font-weight: bold; color: #1f2937; margin: 0 0 16px 0;">
+          📋 Instructions
+        </h3>
+
+        <ul style="color: #4b5563; padding-left: 20px; margin: 0;">
+          <li style="margin-bottom: 8px;">Enter this code on the booking verification page to confirm your booking.</li>
+          <li style="margin-bottom: 8px;">This code will expire in {{ expires_in }} minutes.</li>
+          <li style="margin-bottom: 8px;">If you did not request this code, please ignore this email.</li>
+          <li>Do not share this code with anyone.</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center; margin-top: 24px;">
+        <a href="{{ verification_url }}" style="display: inline-block; background-color: #007a45; color: white; font-weight: bold; text-decoration: none; padding: 12px 24px; border-radius: 6px;">
+          Verify Booking Online
+        </a>
+      </div>
+    </div>
+
+    <!-- Help -->
+    <div style="padding: 20px 24px; background-color: #e6f2ee; border-top: 1px solid #bbf7d0;">
+      <h3 style="font-size: 18px; font-weight: bold; color: #007a45; margin: 0 0 8px 0;">Need Help?</h3>
+
+      <div style="color: #374151;">
+        <p style="margin: 8px 0;">
+          If you are having trouble with the verification process or have questions about your booking, contact support.
+        </p>
+
+        <p style="margin: 8px 0;">
+          <strong>Email:</strong>
+          <a href="mailto:support@{{ site_domain }}" style="color: #007a45; text-decoration: none;">
+            support@{{ site_domain }}
+          </a>
+        </p>
+
+        <p style="margin: 8px 0;">
+          <strong>Phone:</strong> {{ support_phone }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="padding: 16px 24px; background-color: #1f2937; text-align: center;">
+      <p style="color: #d1d5db; font-size: 14px; margin: 0 0 8px 0;">
+        This is an automated email. Please do not reply.
+      </p>
+
+      <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+        © {% now "Y" %} {{ site_name }}. All rights reserved.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>
