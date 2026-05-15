@@ -23,7 +23,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'Elite_mail',
+    'Elite_freelancer',
     'rest_framework',
 
 
