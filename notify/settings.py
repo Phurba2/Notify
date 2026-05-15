@@ -131,3 +131,5 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+
+FIREBASE_SERVICE_ACCOUNT = BASE_DIR / "config" / "firebase" / "service-account.json"

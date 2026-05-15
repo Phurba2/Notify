@@ -11,7 +11,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import EmailHistory
+from .models import Mail, Inapp, Booking, PushToken
 
 from .utils import (
     send_html_email,
@@ -19,6 +19,7 @@ from .utils import (
     generate_otp,
     send_forgot_password_email,
     send_booking_verification_email,
+    send_fcm_push,
 )
 
 
@@ -36,11 +37,10 @@ class NotifyView(APIView):
         if not user_email:
             return Response({"error": "Email is required"}, status=400)
 
-        notif = EmailHistory.objects.create(
+        notif = Mail.objects.create(
             user=user_name,
             email=user_email,
             message="Welcome HTML Email",
-            notify_type="MAIL",
             status="PENDING",
         )
 
@@ -115,11 +115,10 @@ class ProfessionalVerificationView(APIView):
             timeout=600,
         )
 
-        notif = EmailHistory.objects.create(
+        notif = Mail.objects.create(
             user=professional_name,
             email=user_email,
             message="Professional Verification OTP",
-            notify_type="MAIL",
             status="PENDING",
         )
 
@@ -175,11 +174,10 @@ class ProfessionalSignupView(APIView):
             timeout=600,
         )
 
-        notif = EmailHistory.objects.create(
+        notif = Mail.objects.create(
             user=name,
             email=email,
             message="Professional Verification OTP",
-            notify_type="MAIL",
             status="PENDING",
         )
 
@@ -232,11 +230,10 @@ class ProfessionalVerifyOTPView(APIView):
 
         cache.delete(reference_id)
 
-        notif = EmailHistory.objects.create(
+        notif = Mail.objects.create(
             user=otp_data["name"],
             email=otp_data["email"],
             message="Professional Welcome Email",
-            notify_type="MAIL",
             status="PENDING",
         )
 
@@ -297,7 +294,7 @@ class ForgotPasswordRequestView(APIView):
 
         context = {
             "site_name": "Elite Agency",
-            "site_domain": "mysuperwebsite.com",
+            "site_domain": "elitefreelancer.org",
             "reference_id": reference_id,
             "otp_code": otp_code,
             "expires_in": 10,
@@ -369,6 +366,8 @@ class ResetPasswordView(APIView):
         cache.delete(reference_id)
 
         return Response({"status": "Password reset successful"}, status=200)
+
+
 class BookingVerificationRequestView(APIView):
     def post(self, request):
         if request.headers.get("X-API-KEY") != "furba":
@@ -387,7 +386,6 @@ class BookingVerificationRequestView(APIView):
         otp_code = generate_otp()
         reference_id = f"booking_{customer_email}"
 
-        # OTP is stored in cache only
         cache.set(
             reference_id,
             {
@@ -402,7 +400,7 @@ class BookingVerificationRequestView(APIView):
 
         context = {
             "site_name": "Elite Agency",
-            "site_domain": "mysuperwebsite.com",
+            "site_domain": "elitefreelancer.org",
             "reference_id": reference_id,
             "otp_code": otp_code,
             "expires_in": 10,
@@ -422,7 +420,8 @@ class BookingVerificationRequestView(APIView):
             "status": "Booking verification OTP is being sent",
             "reference_id": reference_id,
         }, status=202)
- 
+
+
 class BookingVerifyOTPView(APIView):
     def post(self, request):
         if request.headers.get("X-API-KEY") != "furba":
@@ -444,15 +443,12 @@ class BookingVerifyOTPView(APIView):
         if otp_data["otp_code"] != str(otp_code):
             return Response({"error": "Invalid OTP"}, status=400)
 
-        # OTP is removed from cache after successful verification
         cache.delete(reference_id)
 
-        # Only final verification status is saved in database
-        EmailHistory.objects.create(
+        Booking.objects.create(
             user=otp_data["customer_name"],
             email=otp_data["email"],
             message=f"Booking verified for {otp_data['service_type']}",
-            notify_type="BOOKING",
             status="VERIFIED",
         )
 
@@ -465,6 +461,7 @@ class BookingVerifyOTPView(APIView):
                 "event_date": otp_data.get("event_date", ""),
             }
         }, status=200)
+
 
 class InAppNotificationView(APIView):
     def post(self, request):
@@ -480,14 +477,11 @@ class InAppNotificationView(APIView):
         if not message:
             return Response({"error": "Message is required"}, status=400)
 
-        notif = EmailHistory.objects.create(
+        notif = Inapp.objects.create(
             user=user_name,
             email=user_email,
             message=message,
-            notify_type="INAPP",
             status="UNREAD",
-            project="ELITE",
-            channel="INAPP",
         )
 
         return Response({
@@ -497,3 +491,67 @@ class InAppNotificationView(APIView):
             "email": notif.email,
             "message": notif.message,
         }, status=201)
+
+
+class SavePushTokenView(APIView):
+    def post(self, request):
+        data = request.data
+
+        token = data.get("token")
+        email = data.get("email")
+        user_name = data.get("name", "User")
+        platform = data.get("platform", "android")
+
+        if not token:
+            return Response({"error": "FCM token is required"}, status=400)
+
+        PushToken.objects.update_or_create(
+            token=token,
+            defaults={
+                "user": user_name,
+                "email": email,
+                "platform": platform,
+            }
+        )
+
+        return Response({"status": "Push token saved"}, status=201)
+
+
+class SendPushView(APIView):
+    def post(self, request):
+        if request.headers.get("X-API-KEY") != "furba":
+            return Response({"error": "Unauthorized"}, status=401)
+
+        email = request.data.get("email")
+        title = request.data.get("title", "Elite Agency")
+        message = request.data.get("message", "You have a new notification")
+
+        tokens = PushToken.objects.all()
+
+        if email:
+            tokens = tokens.filter(email=email)
+
+        sent = 0
+        failed = 0
+
+        for item in tokens:
+            try:
+                send_fcm_push(
+                    token=item.token,
+                    title=title,
+                    body=message,
+                    data={
+                        "email": item.email or "",
+                        "type": "push",
+                    }
+                )
+                sent += 1
+            except Exception as e:
+                print("Push error:", e)
+                failed += 1
+
+        return Response({
+            "status": "Push notification processed",
+            "sent": sent,
+            "failed": failed,
+        })

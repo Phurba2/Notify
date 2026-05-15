@@ -1,4 +1,6 @@
 import random
+import firebase_admin
+from firebase_admin import credentials, messaging
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -98,3 +100,34 @@ def send_booking_verification_email(user_email, context):
     except Exception as e:
         print("📧 Booking Verification Email Error:", e)
         return False
+
+
+def init_firebase():
+    if firebase_admin._apps:
+        return True
+
+    firebase_file = getattr(settings, "FIREBASE_SERVICE_ACCOUNT", None)
+
+    if not firebase_file or not os.path.exists(firebase_file):
+        print("⚠️ Firebase service account file not found. Push notification disabled.")
+        return False
+
+    cred = credentials.Certificate(firebase_file)
+    firebase_admin.initialize_app(cred)
+    return True
+
+
+def send_fcm_push(token, title, body, data=None):
+    if not init_firebase():
+        raise Exception("Firebase is not configured correctly.")
+
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title=title,
+            body=body,
+        ),
+        data=data or {},
+        token=token,
+    )
+
+    return messaging.send(message)

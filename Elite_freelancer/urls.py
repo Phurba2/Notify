@@ -11,6 +11,8 @@ from .views import (
     BookingVerificationRequestView,
     BookingVerifyOTPView,
     InAppNotificationView,
+    SavePushTokenView,
+    SendPushView,
 )
 
 
@@ -28,4 +30,7 @@ urlpatterns = [
     path("booking-verify-otp", BookingVerifyOTPView.as_view(), name="booking_verify_otp"),
 
     path("inapp-notification", InAppNotificationView.as_view(), name="inapp_notification"),
+
+    path("save-push-token", SavePushTokenView.as_view(), name="save_push_token"),
+    path("send-push", SendPushView.as_view(), name="send_push"),
 ]
