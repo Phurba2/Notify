@@ -465,3 +465,35 @@ class BookingVerifyOTPView(APIView):
                 "event_date": otp_data.get("event_date", ""),
             }
         }, status=200)
+
+class InAppNotificationView(APIView):
+    def post(self, request):
+        if request.headers.get("X-API-KEY") != "furba":
+            return Response({"error": "Unauthorized"}, status=401)
+
+        data = request.data
+
+        user_name = data.get("name", "User")
+        user_email = data.get("email")
+        message = data.get("message")
+
+        if not message:
+            return Response({"error": "Message is required"}, status=400)
+
+        notif = EmailHistory.objects.create(
+            user=user_name,
+            email=user_email,
+            message=message,
+            notify_type="INAPP",
+            status="UNREAD",
+            project="ELITE",
+            channel="INAPP",
+        )
+
+        return Response({
+            "status": "In-app notification saved",
+            "id": notif.id,
+            "user": notif.user,
+            "email": notif.email,
+            "message": notif.message,
+        }, status=201)

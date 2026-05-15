@@ -10,6 +10,7 @@ from .views import (
     ResetPasswordView,
     BookingVerificationRequestView,
     BookingVerifyOTPView,
+    InAppNotificationView,
 )
 
 
@@ -25,4 +26,6 @@ urlpatterns = [
 
     path("booking-verification", BookingVerificationRequestView.as_view(), name="booking_verification"),
     path("booking-verify-otp", BookingVerifyOTPView.as_view(), name="booking_verify_otp"),
+
+    path("inapp-notification", InAppNotificationView.as_view(), name="inapp_notification"),
 ]
