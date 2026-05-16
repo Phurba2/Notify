@@ -13,6 +13,8 @@ from rest_framework.response import Response
 
 from .models import Mail, Inapp, Booking, PushToken
 
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 from .utils import (
     send_html_email,
     send_professional_verification_email,
@@ -24,12 +26,10 @@ from .utils import (
 
 
 class NotifyView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        if request.headers.get("X-API-KEY") != "furba":
-            return Response({"error": "Unauthorized"}, status=401)
-
         data = request.data
-
         user_name = data.get("name", "Valued Member")
         user_email = data.get("email")
         user_type = data.get("user_type", "normal")
@@ -88,12 +88,10 @@ def webhook_receiver(request):
 
 
 class ProfessionalVerificationView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        if request.headers.get("X-API-KEY") != "furba":
-            return Response({"error": "Unauthorized"}, status=401)
-
         data = request.data
-
         professional_name = data.get("name", "Professional")
         user_email = data.get("email")
         expertise = data.get("expertise", "Not specified")
@@ -147,10 +145,9 @@ class ProfessionalVerificationView(APIView):
 
 
 class ProfessionalSignupView(APIView):
-    def post(self, request):
-        if request.headers.get("X-API-KEY") != "furba":
-            return Response({"error": "Unauthorized"}, status=401)
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request):
         data = request.data
 
         name = data.get("name", "Professional")
@@ -208,10 +205,9 @@ class ProfessionalSignupView(APIView):
 
 
 class ProfessionalVerifyOTPView(APIView):
-    def post(self, request):
-        if request.headers.get("X-API-KEY") != "furba":
-            return Response({"error": "Unauthorized"}, status=401)
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request):
         reference_id = request.data.get("reference_id")
         otp_code = request.data.get("otp_code")
 
@@ -268,6 +264,8 @@ class ProfessionalVerifyOTPView(APIView):
 
 
 class ForgotPasswordRequestView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         email = request.data.get("email")
 
@@ -312,6 +310,8 @@ class ForgotPasswordRequestView(APIView):
 
 
 class VerifyForgotPasswordOTPView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         reference_id = request.data.get("reference_id")
         otp_code = request.data.get("otp_code")
@@ -338,6 +338,8 @@ class VerifyForgotPasswordOTPView(APIView):
 
 
 class ResetPasswordView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         reference_id = request.data.get("reference_id")
         new_password = request.data.get("new_password")
@@ -369,12 +371,10 @@ class ResetPasswordView(APIView):
 
 
 class BookingVerificationRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        if request.headers.get("X-API-KEY") != "furba":
-            return Response({"error": "Unauthorized"}, status=401)
-
         data = request.data
-
         customer_name = data.get("customer_name", "Customer")
         customer_email = data.get("email")
         service_type = data.get("service_type", "Service Booking")
@@ -423,10 +423,9 @@ class BookingVerificationRequestView(APIView):
 
 
 class BookingVerifyOTPView(APIView):
-    def post(self, request):
-        if request.headers.get("X-API-KEY") != "furba":
-            return Response({"error": "Unauthorized"}, status=401)
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request):
         reference_id = request.data.get("reference_id")
         otp_code = request.data.get("otp_code")
 
@@ -464,12 +463,10 @@ class BookingVerifyOTPView(APIView):
 
 
 class InAppNotificationView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        if request.headers.get("X-API-KEY") != "furba":
-            return Response({"error": "Unauthorized"}, status=401)
-
         data = request.data
-
         user_name = data.get("name", "User")
         user_email = data.get("email")
         message = data.get("message")
@@ -494,6 +491,8 @@ class InAppNotificationView(APIView):
 
 
 class SavePushTokenView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         data = request.data
 
@@ -518,10 +517,9 @@ class SavePushTokenView(APIView):
 
 
 class SendPushView(APIView):
-    def post(self, request):
-        if request.headers.get("X-API-KEY") != "furba":
-            return Response({"error": "Unauthorized"}, status=401)
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request):
         email = request.data.get("email")
         title = request.data.get("title", "Elite Agency")
         message = request.data.get("message", "You have a new notification")
