@@ -1,21 +1,29 @@
-# Firebase credentials
-config/firebase/*.json
-config/firebase/service-account.json
-*.key.json
-
-# Python/Django
-*.pyc
+# Python cache
 __pycache__/
-*.log
-.env
-venv/
-env/
-myenv/
-db.sqlite3
-/static/
-/media/
+*.py[cod]
+*.pyo
+*.pyd
 
-# IDE
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Django database
+db.sqlite3
+*.sqlite3
+
+# Django generated files
+media/
+staticfiles/
+
+# Secrets
+.env
+*.env
+
+# Editor / OS
 .vscode/
 .idea/
-*.swp
+.DS_Store
+
+config/firebase/service-account.json
