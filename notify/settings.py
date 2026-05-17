@@ -26,8 +26,8 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'Elite_freelancer',
+    'Emauka.apps.EmaukaConfig',  # 👈 use this instead of just "Emauka"
     'rest_framework',
-
 
     'django.contrib.admin',
     'django.contrib.auth',
