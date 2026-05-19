@@ -111,3 +111,38 @@ class EmaukaInappListView(APIView):
                 for n in notifications
             ]
         }, status=200)
+
+class EmaukaBroadcastInappView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        message = request.data.get("message")
+        users = request.data.get("users", [])
+
+        if not message:
+            return Response({"error": "Message is required"}, status=400)
+
+        if not users:
+            return Response({"error": "Users list is required"}, status=400)
+
+        created = 0
+
+        for user in users:
+            name = user.get("name", "User")
+            email = user.get("email")
+
+            if not email:
+                continue
+
+            Inapp.objects.create(
+                user=name,
+                email=email,
+                message=message,
+                status="UNREAD",
+            )
+            created += 1
+
+        return Response({
+            "status": "Broadcast notification created",
+            "created": created,
+        }, status=201)
