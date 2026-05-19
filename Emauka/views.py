@@ -84,3 +84,30 @@ class EmaukaInappView(APIView):
             "email": notif.email,
             "message": notif.message,
         }, status=201)
+
+class EmaukaInappListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        email = request.GET.get("email")
+
+        if not email:
+            return Response({"error": "Email is required"}, status=400)
+
+        notifications = Inapp.objects.filter(
+            email=email,
+            status="UNREAD"
+        ).order_by("-created_at")[:10]
+
+        return Response({
+            "notifications": [
+                {
+                    "id": n.id,
+                    "message": n.message,
+                    "status": n.status,
+                    "is_read": n.status == "READ",
+                    "created_at": n.created_at.isoformat(),
+                }
+                for n in notifications
+            ]
+        }, status=200)
