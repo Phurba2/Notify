@@ -1,6 +1,5 @@
 import requests
 import sys
-import json
 
 # Django defaults to port 8000. 
 # Make sure this matches the path in your urls.py exactly.
