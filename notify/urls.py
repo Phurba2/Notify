@@ -1,15 +1,17 @@
 from django.contrib import admin
 from django.urls import path, include
-from Elite_freelancer.views import NotifyView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from Elite_freelancer.views import NotifyView
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('notify', NotifyView.as_view()),
-    path("", include("Elite_freelancer.urls")),
+    path("admin/", admin.site.urls),
+
+    path("notify/", NotifyView.as_view(), name="notify"),
+
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
-    # Emauka
+    path("", include("Elite_freelancer.urls")),
     path("", include("Emauka.urls")),
 ]
